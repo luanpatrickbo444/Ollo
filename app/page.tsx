@@ -74,7 +74,7 @@ export default function Home() {
 
   if (!session) return <main className="auth-screen">
     <div className="auth-orb auth-orb-one"/><div className="auth-orb auth-orb-two"/>
-    <div className="auth-top"><a className="wordmark" href="#"><span className="logo-mark"></span>ollo<span className="wordmark-dot">.</span></a><span className="auth-top-label">INTELIGÊNCIA JURÍDICA</span></div>
+    <div className="auth-top"><a className="wordmark" href="#">ollo<span className="wordmark-dot">.</span></a><span className="auth-top-label">INTELIGÊNCIA JURÍDICA</span></div>
     <section className="auth-card">
       <div className="auth-symbol"><Icon name="sparkles" size={25}/></div>
       <div className="eyebrow">SUA ASSISTENTE JURÍDICA COM IA</div>
