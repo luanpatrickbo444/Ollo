@@ -76,7 +76,6 @@ export default function Home() {
     <div className="auth-orb auth-orb-one"/><div className="auth-orb auth-orb-two"/>
     <div className="auth-top"><a className="wordmark" href="#">ollo<span className="wordmark-dot">.</span></a><span className="auth-top-label">INTELIGÊNCIA JURÍDICA</span></div>
     <section className="auth-card">
-      <div className="auth-symbol"><Icon name="sparkles" size={25}/></div>
       <div className="eyebrow">SUA ASSISTENTE JURÍDICA COM IA</div>
       <h1>{mode === "login" ? <>O conhecimento jurídico,<br/><span>em uma nova perspectiva.</span></> : mode === "register" ? <>Comece sua jornada<br/><span>com a Ollo.</span></> : <>Vamos recuperar<br/><span>seu acesso.</span></>}</h1>
       <p className="auth-subtitle">{mode === "login" ? "Entre para pesquisar, analisar e organizar suas questões jurídicas." : mode === "register" ? "Crie sua conta para começar a explorar a inteligência jurídica." : "Informe seu e-mail e enviaremos as instruções de recuperação."}</p>
