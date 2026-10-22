@@ -1,0 +1,150 @@
+openapi: 3.1.0
+info:
+  title: Ollo REST API
+  version: 1.0.0
+  description: API REST da Ollo para autenticação, conversas, mensagens e assistente jurídico baseado em endpoint Jurema compatível com OpenAI.
+servers:
+  - url: https://SEU-PROJETO.vercel.app
+    description: Produção (substitua pela URL publicada)
+  - url: http://localhost:3000
+    description: Desenvolvimento local
+security:
+  - BearerAuth: []
+paths:
+  /api/health:
+    get:
+      security: []
+      summary: Verifica se a API está respondendo
+      responses:
+        '200':
+          description: API ativa
+  /api/auth/register:
+    post:
+      security: []
+      summary: Cria uma conta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string, minLength: 8 }
+                name: { type: string }
+      responses:
+        '201': { description: Conta criada ou instruções de confirmação enviadas }
+        '400': { description: Dados inválidos }
+  /api/auth/login:
+    post:
+      security: []
+      summary: Autentica e retorna a sessão Supabase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string, format: email }
+                password: { type: string }
+      responses:
+        '200': { description: Login realizado }
+        '401': { description: Credenciais inválidas }
+  /api/auth/forgot-password:
+    post:
+      security: []
+      summary: Solicita recuperação de senha por e-mail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email]
+              properties:
+                email: { type: string, format: email }
+      responses:
+        '200': { description: Solicitação processada }
+  /api/auth/update-password:
+    post:
+      summary: Atualiza a senha da sessão autenticada
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [password]
+              properties:
+                password: { type: string, minLength: 8 }
+      responses:
+        '200': { description: Senha atualizada }
+        '401': { description: Não autenticado }
+  /api/auth/logout:
+    post:
+      summary: Valida a sessão para encerramento
+      responses:
+        '200': { description: Solicitação processada; cliente também deve limpar sua sessão Supabase }
+  /api/me:
+    get:
+      summary: Retorna o usuário autenticado
+      responses:
+        '200': { description: Dados do usuário }
+        '401': { description: Não autenticado }
+  /api/conversations:
+    get:
+      summary: Lista conversas do usuário autenticado
+      responses:
+        '200': { description: Lista de conversas }
+        '401': { description: Não autenticado }
+    post:
+      summary: Cria uma conversa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title: { type: string, maxLength: 120 }
+      responses:
+        '201': { description: Conversa criada }
+        '401': { description: Não autenticado }
+  /api/conversations/{id}/messages:
+    get:
+      summary: Lista mensagens de uma conversa do usuário
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200': { description: Histórico da conversa }
+        '404': { description: Conversa não encontrada }
+  /api/chat:
+    post:
+      summary: Envia pergunta para a assistente jurídica Ollo
+      description: Requer endpoint de inferência Jurema ativo e compatível com a API Chat Completions da OpenAI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [message]
+              properties:
+                message: { type: string, maxLength: 8000 }
+                conversationId: { type: string, format: uuid }
+      responses:
+        '200': { description: Resposta gerada e salva }
+        '401': { description: Não autenticado }
+        '502': { description: Endpoint de IA indisponível ou sem resposta válida }
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

@@ -1,0 +1,23 @@
+{
+  "info": {
+    "name": "Ollo REST API",
+    "description": "Coleção inicial para testar a API REST Ollo. Configure baseUrl e accessToken nas variáveis da coleção.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "accessToken", "value": "COLE_ACCESS_TOKEN_AQUI" },
+    { "key": "conversationId", "value": "COLE_UUID_DA_CONVERSA_AQUI" }
+  ],
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/api/health" } },
+    { "name": "Cadastrar", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"voce@exemplo.com\",\n  \"password\": \"SenhaForte123!\",\n  \"name\": \"Usuário Ollo\"\n}" }, "url": "{{baseUrl}}/api/auth/register" } },
+    { "name": "Login", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"voce@exemplo.com\",\n  \"password\": \"SenhaForte123!\"\n}" }, "url": "{{baseUrl}}/api/auth/login" } },
+    { "name": "Solicitar recuperação de senha", "request": { "method": "POST", "header": [{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"email\": \"voce@exemplo.com\"\n}" }, "url": "{{baseUrl}}/api/auth/forgot-password" } },
+    { "name": "Meu usuário", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{accessToken}}"}], "url": "{{baseUrl}}/api/me" } },
+    { "name": "Listar conversas", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{accessToken}}"}], "url": "{{baseUrl}}/api/conversations" } },
+    { "name": "Criar conversa", "request": { "method": "POST", "header": [{"key":"Authorization","value":"Bearer {{accessToken}}"},{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Pesquisa jurídica\"\n}" }, "url": "{{baseUrl}}/api/conversations" } },
+    { "name": "Histórico de mensagens", "request": { "method": "GET", "header": [{"key":"Authorization","value":"Bearer {{accessToken}}"}], "url": "{{baseUrl}}/api/conversations/{{conversationId}}/messages" } },
+    { "name": "Perguntar à Ollo", "request": { "method": "POST", "header": [{"key":"Authorization","value":"Bearer {{accessToken}}"},{"key":"Content-Type","value":"application/json"}], "body": { "mode": "raw", "raw": "{\n  \"message\": \"Explique a diferença entre prescrição e decadência no direito civil.\",\n  \"conversationId\": \"{{conversationId}}\"\n}" }, "url": "{{baseUrl}}/api/chat" } }
+  ]
+}
